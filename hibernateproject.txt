@@ -1,0 +1,122 @@
+package com.demo.hibernate;
+
+import org.hibernate.Session;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println("Project started...");
+		
+		Configuration cfg = new Configuration();
+		cfg.configure("index.xml");
+		SessionFactory sessionFactory = cfg.buildSessionFactory();
+		
+		Student_Info student = new Student_Info();
+		
+		student.setName("kowsalya");
+		student.setRollNo(3);
+		System.out.println(student);
+		
+		Session session = sessionFactory.openSession();
+		
+		Transaction tx = session.beginTransaction();
+		
+		session.save(student);
+		
+		tx.commit();
+		
+		session.close();
+		
+
+
+		
+	}
+
+}
+save as Main.java
+
+package com.demo.hibernate;
+
+	import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+
+	@Entity
+	@Table(name="STUDENT_INFORMATION")
+	public class Student_Info 
+	{ 
+		
+	   @Id//setting primary key
+		private int rollNo;
+		private String name;
+		
+		public int getRollNo() 
+		{
+			return rollNo;
+		}
+			
+	
+	public void setRollNo(int rollNo) {
+		this.rollNo = rollNo;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return +this.rollNo+" : " +this.name+"";
+	}
+	
+
+	}
+save as Student_Info .java
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+	
+	<hibernate-configuration>
+	<session-factory>
+	<!-- Datsbase connection setting -->
+	<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+	<property name="connection.url">jdbc:mysql://localhost:3306/myhiber3</property>
+	<property name="connection.username">root</property>
+	<property name="connection.password">1234567</property>
+	
+	<!-- SQL dialect -->
+	<!-- Specifies the type of database used in hibernate so that hibernate generate appropriate type of SQL statements -->
+	<property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+	
+	<!-- Echo all executed SQL to stdout -->
+	<property name = "show_sql">true</property>
+	
+	<!-- Drop the existing tables and create new one -->
+	<!-- Automatically validates or exports schema DDL to the database when the SessionFactory is created -->
+	<!-- DDL-DataDefinitionLanguage-Drop and re-create the database schema  -->
+     <property name="hbm2ddl.auto">create</property>
+	
+	<!-- Mention here all the model classes along with their package name -->
+	<mapping class="com.demo.hibernate.Student_Info"/>
+	
+	</session-factory>
+	
+	
+	
+	</hibernate-configuration>
+	
+save as index.xml
+
